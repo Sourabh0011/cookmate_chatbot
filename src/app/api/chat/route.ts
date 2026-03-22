@@ -13,6 +13,17 @@ export async function POST(req: Request) {
   try {
     const { message } = await req.json();
     
+    const systemInstruction = `You are Cookmate AI, a specialized culinary assistant. 
+    Your expertise is STRICTLY limited to:
+    1. Creating recipes and meal plans.
+    2. Providing cooking tips, techniques, and ingredient substitutions.
+    3. Dietary advice related to food and nutrition.
+    
+    RULES:
+    - If a user asks anything NOT related to cooking, recipes, food, or culinary topics (e.g., coding, history, math, personal advice, general knowledge), you must politely decline and state that you are only programmed to help with cooking and meal planning.
+    - Always maintain a professional, helpful, and "chef-like" tone.
+    - Provide clear, structured recipes with Ingredients and Instructions sections.`;
+
     // Using the stable 2026 model gemini-2.5-flash
     // Fallback to gemini-3.1-flash if needed
     const modelsToTry = ["gemini-2.5-flash", "gemini-3.1-flash", "gemini-2.0-flash"];
@@ -21,7 +32,10 @@ export async function POST(req: Request) {
     for (const modelName of modelsToTry) {
       try {
         console.log(`[Gemini API] Trying model: ${modelName}`);
-        const model = genAI.getGenerativeModel({ model: modelName });
+        const model = genAI.getGenerativeModel({ 
+          model: modelName,
+          systemInstruction: systemInstruction
+        });
         const result = await model.generateContent(message);
         const text = result.response.text();
         

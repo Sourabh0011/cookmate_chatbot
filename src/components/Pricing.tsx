@@ -20,7 +20,7 @@ const Pricing = () => {
           >
             <span
               className="absolute top-1/2 transform -translate-y-1/2 w-6 h-6 bg-amber-400 rounded-full shadow-md transition-all"
-              style={{ left: 'calc(100% - 1.54rem)' }}
+              style={{ left: '2px' }}
             ></span>
           </button>
           <span className="text-base font-medium text-white ml-3">Annual</span>
@@ -96,7 +96,7 @@ const Pricing = () => {
                 $72<span className="text-base font-normal ml-1">/year</span>
               </div>
               <button className="w-full font-semibold py-3 rounded-xl shadow-md text-lg transition duration-200 border-none bg-gradient-to-r from-purple-700 to-fuchsia-700 hover:from-purple-800 hover:to-fuchsia-800 text-white mt-2 cursor-pointer">
-                Register to Start
+               <a href="/signup"> Register to Start </a>
               </button>
             </div>
           </div>
@@ -130,7 +130,7 @@ const Pricing = () => {
                 $159<span className="text-base font-normal ml-1">/year</span>
               </div>
               <button className="w-full font-semibold py-3 rounded-xl shadow-md text-lg transition duration-200 border-none bg-gradient-to-r from-emerald-700 to-emerald-800 hover:from-emerald-800 hover:to-emerald-700 text-white mt-2 cursor-pointer">
-                Register to Start
+                <a href="/signup">Register to Start </a>
               </button>
             </div>
           </div>

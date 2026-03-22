@@ -1,6 +1,7 @@
 import React from 'react';
 import { Coins, History, Bookmark, Mail, Apple, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import Navbar from '@/components/Navbar';
 
 const FeatureItem = ({ icon, title, desc }: { icon: React.ReactNode, title: string, desc: string }) => (
   <div className="flex gap-4">
@@ -14,6 +15,11 @@ const FeatureItem = ({ icon, title, desc }: { icon: React.ReactNode, title: stri
 
 const AuthPage = () => {
   return (
+    
+     
+    <div className="bg-[#0a0a0a] border-b border-white/10">
+
+      <Navbar />
     <div className="min-h-screen w-full flex flex-col md:flex-row font-sans">
       
       {/* Back button for mobile */}
@@ -112,6 +118,7 @@ const AuthPage = () => {
           </p>
         </div>
       </div>
+    </div>
     </div>
   );
 };
