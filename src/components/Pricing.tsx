@@ -1,6 +1,22 @@
-import { Link } from "lucide-react";
+'use client';
+
+import { useState } from "react";
+import Link from "next/link";
 
 const Pricing = () => {
+  const [isAnnual, setIsAnnual] = useState(true);
+
+  const plans = {
+    premium: {
+      monthly: 8,
+      annual: 72,
+    },
+    pro: {
+      monthly: 18,
+      annual: 159,
+    }
+  };
+
   return (
     <section className="bg-black pt-16 pb-8 px-2 mt-0">
       <div className="max-w-6xl mx-auto">
@@ -12,25 +28,32 @@ const Pricing = () => {
           nearly-unlimited usage, a personalized AI model, and much more. Start
           your free trial and experience the future of cooking.
         </p>
+        
+        {/* Toggle Switch */}
         <div className="flex justify-center items-center mb-0">
-          <span className="text-base font-medium text-gray-400 mr-3">Monthly</span>
+          <span className={`text-base font-medium mr-3 transition-colors ${!isAnnual ? 'text-white' : 'text-gray-400'}`}>Monthly</span>
           <button
             type="button"
-            className="relative w-14 h-7 bg-gray-700 rounded-full transition outline-none border-2 border-solid border-gray-600 flex-shrink-0 shadow-inner focus:ring-2 focus:ring-purple-400"
+            onClick={() => setIsAnnual(!isAnnual)}
+            className="relative w-14 h-7 bg-gray-700 rounded-full transition outline-none border-2 border-solid border-gray-600 flex-shrink-0 shadow-inner focus:ring-2 focus:ring-purple-400 cursor-pointer"
           >
             <span
-              className="absolute top-1/2 transform -translate-y-1/2 w-6 h-6 bg-amber-400 rounded-full shadow-md transition-all"
+              className={`absolute top-1/2 transform -translate-y-1/2 w-6 h-6 bg-amber-400 rounded-full shadow-md transition-all duration-300 ${
+                isAnnual ? 'translate-x-7' : 'translate-x-0'
+              }`}
               style={{ left: '2px' }}
             ></span>
           </button>
-          <span className="text-base font-medium text-white ml-3">Annual</span>
+          <span className={`text-base font-medium ml-3 transition-colors ${isAnnual ? 'text-white' : 'text-gray-400'}`}>Annual</span>
         </div>
-        <p className="text-center text-amber-300 mb-4 mt-2 text-sm font-bold">
-          Save 25% with Annual Plans
+        
+        <p className="text-center text-amber-300 mb-4 mt-2 text-sm font-bold h-5">
+          {isAnnual ? 'Save 25% with Annual Plans' : ''}
         </p>
+
         <div className="flex flex-col md:flex-row gap-8 justify-center">
           {/* Basic Plan */}
-          <div className="flex-1 bg-opacity-50 rounded-3xl p-8 flex flex-col border border-gray-700 relative min-h-[540px] mx-4 md:mx-0">
+          <div className="flex-1 bg-opacity-50 rounded-3xl p-8 flex flex-col border border-gray-700 relative min-h-[540px] mx-4 md:mx-0 transition-transform hover:scale-[1.02]">
             <div className="flex items-center mb-4 mx-auto">
               <span className="bg-gray-700 text-white px-4 py-1 rounded-full text-md font-semibold mr-2">
                 Basic
@@ -52,15 +75,15 @@ const Pricing = () => {
             </ul>
             <div className="flex-1"></div>
             <Link 
-  href="/signup" 
-  className="block w-full text-center font-semibold py-3 rounded-xl shadow-md text-lg transition-all"
->
-  Create Free Account
-</Link>
+              href="/signup" 
+              className="block w-full text-center font-semibold py-3 rounded-xl shadow-md text-lg transition-all bg-gray-800 hover:bg-gray-700 text-white"
+            >
+              Create Free Account
+            </Link>
           </div>
 
           {/* Premium Plan */}
-          <div className="flex-1 bg-gradient-to-br from-purple-900 to-fuchsia-900 rounded-3xl p-8 flex flex-col border border-purple-700 relative min-h-[540px] mx-4 md:mx-0">
+          <div className="flex-1 bg-gradient-to-br from-purple-900 to-fuchsia-900 rounded-3xl p-8 flex flex-col border border-purple-700 relative min-h-[540px] mx-4 md:mx-0 shadow-lg shadow-purple-900/20 transition-transform hover:scale-[1.02]">
             <div className="flex items-center mb-4 mt-0 mx-auto">
               <span className="bg-gradient-to-r from-purple-700 to-fuchsia-700 text-white px-4 py-1 rounded-full text-md font-semibold mr-2">
                 Premium
@@ -93,16 +116,20 @@ const Pricing = () => {
             <div className="flex-1"></div>
             <div className="w-full flex flex-col items-center mt-8">
               <div className="text-3xl font-extrabold text-white mb-2">
-                $72<span className="text-base font-normal ml-1">/year</span>
+                ${isAnnual ? plans.premium.annual : plans.premium.monthly}
+                <span className="text-base font-normal ml-1">/{isAnnual ? 'year' : 'month'}</span>
               </div>
-              <button className="w-full font-semibold py-3 rounded-xl shadow-md text-lg transition duration-200 border-none bg-gradient-to-r from-purple-700 to-fuchsia-700 hover:from-purple-800 hover:to-fuchsia-800 text-white mt-2 cursor-pointer">
-               <a href="/signup"> Register to Start </a>
-              </button>
+              <Link 
+                href="/signup"
+                className="block w-full text-center font-semibold py-3 rounded-xl shadow-md text-lg transition duration-200 border-none bg-gradient-to-r from-purple-700 to-fuchsia-700 hover:from-purple-800 hover:to-fuchsia-800 text-white mt-2 cursor-pointer"
+              >
+                Register to Start
+              </Link>
             </div>
           </div>
 
           {/* Pro Plan */}
-          <div className="flex-1 bg-gradient-to-br to-emerald-900 from-emerald-800 rounded-3xl p-8 flex flex-col border border-gray-700 relative min-h-[540px] mx-4 md:mx-0">
+          <div className="flex-1 bg-gradient-to-br to-emerald-900 from-emerald-800 rounded-3xl p-8 flex flex-col border border-gray-700 relative min-h-[540px] mx-4 md:mx-0 transition-transform hover:scale-[1.02]">
             <div className="flex items-center mb-4 mx-auto">
               <span className="bg-emerald-700 text-white px-4 py-1 rounded-full text-md font-semibold mr-2">
                 Pro
@@ -127,11 +154,15 @@ const Pricing = () => {
             <div className="flex-1"></div>
             <div className="w-full flex flex-col items-center mt-8">
               <div className="text-3xl font-extrabold text-white mb-2">
-                $159<span className="text-base font-normal ml-1">/year</span>
+                ${isAnnual ? plans.pro.annual : plans.pro.monthly}
+                <span className="text-base font-normal ml-1">/{isAnnual ? 'year' : 'month'}</span>
               </div>
-              <button className="w-full font-semibold py-3 rounded-xl shadow-md text-lg transition duration-200 border-none bg-gradient-to-r from-emerald-700 to-emerald-800 hover:from-emerald-800 hover:to-emerald-700 text-white mt-2 cursor-pointer">
-                <a href="/signup">Register to Start </a>
-              </button>
+              <Link 
+                href="/signup"
+                className="block w-full text-center font-semibold py-3 rounded-xl shadow-md text-lg transition duration-200 border-none bg-gradient-to-r from-emerald-700 to-emerald-800 hover:from-emerald-800 hover:to-emerald-700 text-white mt-2 cursor-pointer"
+              >
+                Register to Start
+              </Link>
             </div>
           </div>
         </div>
@@ -142,7 +173,7 @@ const Pricing = () => {
           <strong>
             Add a Cookmate AI Recipe Generator to your website with our easy-install
             widget{' '}
-            <a className="text-amber-300" href="/widget">
+            <a className="text-amber-300" href="/">
               Learn More »
             </a>
           </strong>
