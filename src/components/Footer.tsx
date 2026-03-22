@@ -40,7 +40,7 @@ const Footer = () => {
                 className="text-2xl text-purple-300 select-none whitespace-nowrap" 
                 style={{ fontFamily: "'Dancing Script', 'Brush Script MT', cursive" }}
               >
-                dolly patel
+               - dolly patel
               </span>
             </div>
           </div>

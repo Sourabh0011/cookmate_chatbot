@@ -28,7 +28,7 @@ const Features = () => {
               <div className="bg-transparent pt-6 pb-2">
                 <div className="text-center mb-2">
                   <span className="text-amber-300 uppercase tracking-widest font-bold text-sm">
-                    OVER <u>200 MILLION</u> AI RECIPES CREATED
+                    OVER <u>1000+ K</u> AI RECIPES CREATED
                   </span>
                 </div>
               </div>

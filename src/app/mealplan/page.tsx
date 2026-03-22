@@ -1,8 +1,41 @@
+'use client';
+
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Image from 'next/image';
+import { useState } from 'react';
 
 export default function MealPlan() {
+  const [input, setInput] = useState('');
+  const [response, setResponse] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async () => {
+    if (!input.trim() || loading) return;
+
+    setLoading(true);
+    setError(null);
+    setResponse('');
+
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: input }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to get response');
+
+      setResponse(data.text);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="font-sans">
       <Navbar />
@@ -17,16 +50,24 @@ export default function MealPlan() {
             </p>
             <div className="flex flex-col items-center w-full mx-auto">
               <div className="w-full bg-white rounded-3xl overflow-hidden shadow-lg border border-solid border-gray-900">
-                <div className="relative px-4 pt-3 pb-2">
+                <div className="relative px-4 pt-3 pb-2 text-left">
                   <textarea
                     placeholder="help me create a healthy recipe for..."
                     rows={2}
                     className="bg-transparent w-full resize-none outline-none border-none text-lg text-gray-800 font-normal h-16 overflow-auto"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        handleSubmit();
+                      }
+                    }}
                   ></textarea>
                 </div>
                 <div className="border-t border-gray-200 p-3 sm:p-4">
                   <div className="hidden sm:flex items-center justify-between">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 text-left">
                       <span className="text-gray-400 text-sm">tools</span>
                       <div className="flex gap-2">
                         <div className="flex items-center gap-1.5 px-4 py-2 rounded-full text-sm transition-all duration-200 cursor-pointer hover:opacity-95 bg-[#e5e7eb] text-[#4b5563] border-2 border-[#cccccc] shadow-none font-normal">
@@ -37,12 +78,33 @@ export default function MealPlan() {
                         </div>
                       </div>
                     </div>
-                    <div className="bg-black text-white rounded-full px-6 py-2 flex items-center gap-1 transition-all duration-200 opacity-50 cursor-not-allowed shadow-[0_2px_4px_rgba(0,0,0,0.25)]">
-                      submit
-                    </div>
+                    <button
+                      onClick={handleSubmit}
+                      disabled={loading || !input.trim()}
+                      className={`bg-black text-white rounded-full px-6 py-2 flex items-center gap-1 transition-all duration-200 shadow-[0_2px_4px_rgba(0,0,0,0.25)] ${
+                        loading || !input.trim()
+                          ? 'opacity-50 cursor-not-allowed'
+                          : 'hover:bg-gray-800 cursor-pointer'
+                      }`}
+                    >
+                      {loading ? 'Thinking...' : 'submit'}
+                    </button>
                   </div>
                 </div>
               </div>
+
+              {/* Display response */}
+              {error && (
+                <div className="w-full mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-xl text-left">
+                  {error}
+                </div>
+              )}
+              {response && (
+                <div className="w-full mt-6 p-6 bg-white rounded-3xl shadow-lg border border-gray-200 text-left text-gray-800 whitespace-pre-wrap">
+                  <h3 className="text-xl font-bold mb-4 border-b pb-2">Your AI Response</h3>
+                  {response}
+                </div>
+              )}
             </div>
           </div>
         </section>
