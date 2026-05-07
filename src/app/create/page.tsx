@@ -28,7 +28,7 @@ function RecipeCard({ recipe, onBack }: { recipe: Recipe; onBack?: () => void })
           onClick={onBack}
           className="md:hidden flex items-center gap-2 text-purple-600 font-bold mb-2 p-2 bg-purple-50 rounded-xl w-fit"
         >
-          <ArrowLeft size={20} /> Back to Chat
+          <ArrowLeft size={20} /> Back to Chatt
         </button>
       )}
       
